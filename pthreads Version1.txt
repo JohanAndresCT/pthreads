@@ -1,0 +1,47 @@
+%%writefile pthreads_version1.c
+#include <stdio.h>
+#include <stdlib.h>arg) {
+    int *counter = ma
+#include <pthread.h>
+
+int max;
+
+void *mythread(void *lloc(sizeof(int)); // contador local para cada hilo
+    *counter = 0;
+    char *letter = arg;
+    
+    printf("%s: begin\n", letter);
+    for (int i = 0; i < max; i++) {
+        *counter += 1;
+    }
+    printf("%s: done\n", letter);
+    
+    return (void *) counter; // retornar el contador local
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "usage: main <loopcount>\n");
+        exit(1);
+    }
+    max = atoi(argv[1]);
+
+    pthread_t p1, p2;
+    int *result1, *result2;
+
+    printf("main: begin\n");
+    pthread_create(&p1, NULL, mythread, "A");
+    pthread_create(&p2, NULL, mythread, "B");
+
+    // Esperar a que los hilos terminen y sumar sus contadores
+    pthread_join(p1, (void **) &result1);
+    pthread_join(p2, (void **) &result2);
+
+    int total = *result1 + *result2;
+    printf("main: done\n [counter: %d]\n [should: %d]\n", total, max * 2);
+
+    free(result1);
+    free(result2);
+
+    return 0;
+}
