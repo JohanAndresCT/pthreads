@@ -1,0 +1,49 @@
+
+%%writefile pthreads_version2.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+
+int max;
+int num_threads;
+
+void *mythread(void *arg) {
+    int *counter = malloc(sizeof(int));
+    *counter = 0;
+    
+    for (int i = 0; i < max; i++) {
+        *counter += 1;
+    }
+
+    return (void *) counter;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "usage: main <loopcount> <num_threads>\n");
+        exit(1);
+    }
+
+    max = atoi(argv[1]);
+    num_threads = atoi(argv[2]);
+
+    pthread_t threads[num_threads];
+    int *results[num_threads];
+
+
+    for (int i = 0; i < num_threads; i++) {
+        pthread_create(&threads[i], NULL, mythread, NULL);
+    }
+
+
+    int total = 0;
+    for (int i = 0; i < num_threads; i++) {
+        pthread_join(threads[i], (void **) &results[i]);
+        total += *results[i];
+        free(results[i]); // Liberar memoria del contador de cada hilo
+    }
+
+    printf("main: done\n [counter: %d]\n [should: %d]\n", total, max * num_threads);
+
+    return 0;
+}
