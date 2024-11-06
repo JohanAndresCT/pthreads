@@ -1,3 +1,11 @@
+# Miguel Felipe Casanova Cortes 2324909
+# Laura Stefania Salazar Blanco 2327896
+# Juliana Melissa Bolaños Araujo 2372224
+# Johan Andrés Ceballos Tabarez 2372229
+# Juan José Cortés Rodríguez 2325109
+# Gabriela Guzman 2326772
+
+
 %%writefile pthreads_version1.c
 #include <stdio.h>
 #include <stdlib.h>arg) {
