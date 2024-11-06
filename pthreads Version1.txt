@@ -8,15 +8,15 @@
 
 %%writefile pthreads_version1.c
 #include <stdio.h>
-#include <stdlib.h>arg) {
-    int *counter = ma
+#include <stdlib.h>
 #include <pthread.h>
 
 int max;
 
-void *mythread(void *lloc(sizeof(int)); // contador local para cada hilo
+void *mythread(void *arg) {
+    int *counter = malloc(sizeof(int)); // contador local para cada hilo
     *counter = 0;
-    char *letter = arg;
+    char *letter = (char *)arg;
     
     printf("%s: begin\n", letter);
     for (int i = 0; i < max; i++) {
